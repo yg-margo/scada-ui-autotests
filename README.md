@@ -1,7 +1,6 @@
 [![Python](https://img.shields.io/badge/Python-3.10-blue.svg)](https://www.python.org/downloads/release/python-3100/)
 [![Playwright](https://img.shields.io/badge/Playwright-UI%20tests-brightgreen.svg)](https://playwright.dev/python/)
 [![pytest](https://img.shields.io/badge/pytest-tests-green.svg)](https://docs.pytest.org/)
-[![Playwright](https://img.shields.io/badge/Playwright-UI%20tests-brightgreen.svg)](https://playwright.dev/python/)
 [![Allure](https://img.shields.io/badge/Allure-report-purple.svg)](https://allurereport.org/)
 
 # SCADA Operator UI — UI-тестирование (Playwright, Python)
