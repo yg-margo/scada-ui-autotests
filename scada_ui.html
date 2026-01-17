@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SCADA Operator UI</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f3f4f6;
+      margin: 0;
+      padding: 0;
+      color: #111827;
+    }
+    header {
+      background: #111827;
+      color: #fff;
+      padding: 16px 24px;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 22px;
+    }
+    main {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+    }
+    .hidden {
+      display: none;
+    }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 16px;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+    }
+    button {
+      padding: 10px 16px;
+      border-radius: 8px;
+      border: none;
+      background: #2563eb;
+      color: #fff;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    button:disabled {
+      background: #9ca3af;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+    }
+    th, td {
+      text-align: left;
+      padding: 10px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    th {
+      background: #f9fafb;
+    }
+    .status {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      background: #e0f2fe;
+      color: #0369a1;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>SCADA Operator Panel</h1>
+  </header>
+
+  <main>
+    <!-- LOGIN -->
+    <section id="login-page" class="card">
+      <h2>Login</h2>
+      <label for="username">Username</label>
+      <input id="username" type="text" data-testid="username" />
+
+      <label for="password">Password</label>
+      <input id="password" type="password" data-testid="password" />
+
+      <button id="login-btn" data-testid="login-button">Login</button>
+    </section>
+
+    <!-- DASHBOARD -->
+    <section id="dashboard-page" class="card hidden">
+      <h2>Dashboard</h2>
+      <p class="status">Connected</p>
+
+      <table data-testid="sensors-table">
+        <thead>
+          <tr>
+            <th>Sensor ID</th>
+            <th>Value</th>
+            <th>Last update</th>
+          </tr>
+        </thead>
+        <tbody id="sensors-body">
+          <!-- rows generated dynamically -->
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <script>
+    const loginPage = document.getElementById('login-page');
+    const dashboardPage = document.getElementById('dashboard-page');
+    const loginBtn = document.getElementById('login-btn');
+    const sensorsBody = document.getElementById('sensors-body');
+
+    const sensors = [
+      { id: 'TEMP-1', value: 20 },
+      { id: 'PRESS-2', value: 100 },
+      { id: 'FLOW-3', value: 50 }
+    ];
+
+    function renderSensors() {
+      sensorsBody.innerHTML = '';
+      sensors.forEach(sensor => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${sensor.id}</td>
+          <td data-testid="sensor-value">${sensor.value.toFixed(2)}</td>
+          <td data-testid="sensor-updated">${new Date().toLocaleTimeString()}</td>
+        `;
+        sensorsBody.appendChild(row);
+      });
+    }
+
+    function updateSensors() {
+      sensors.forEach(sensor => {
+        const delta = (Math.random() * 2 - 1);
+        sensor.value += delta;
+      });
+      renderSensors();
+    }
+
+    loginBtn.addEventListener('click', () => {
+      loginPage.classList.add('hidden');
+      dashboardPage.classList.remove('hidden');
+      renderSensors();
+      setInterval(updateSensors, 1000);
+    });
+  </script>
+</body>
+</html>
